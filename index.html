@@ -1,0 +1,53 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Anybotty Can Do It!</title>
+  </head>
+  <body>
+      <div class="main_page" style="width: 100%; margin: 0 auto; text-align: center;">
+        <h1>Anybotty can do it...</h1>
+        <div>
+        <form id="add" style="text-align: left; width: 30%; margin: 0 auto; margin-top: 2em;"
+            
+            >
+            <label for="cname">Command Name (required):</label>&nbsp;
+            <input type="text" name="cname" id="cname" size="10" maxlength="15"/><br><br>
+            <label for="rtext">Response Text (optional):</label>&nbsp;
+            <input type="text" name="rtext" id="rtext" size="40" maxlength="80"/><br><br>
+            <label for="hmessage">Help Message (required):</label>&nbsp;
+            <input type="text" name="hmessage" id="hmessage" size="60" maxlegnth="80"/><br><br>
+            <label for="ifile">Response File(Optional):</label>&nbsp;
+            <input type="file" id="ifile" name="ifile" accept="image/*"><br><br>
+            <button id="create" onclick="uploadCommand()" type="button">Create Command</button>
+            <!--<input type="submit" value="Create Command">-->
+        </form>
+        </div>
+        <script>
+            async function uploadCommand() {
+                let formData = new FormData();
+                formData.append("ifile", ifile.files[0]);
+                formData.append("cname", cname.value);
+                formData.append("rtext", rtext.value);
+                formData.append("hmessage", hmessage.value);
+                const resp = await fetch("YOUR_SERVER_URL", {
+                    method: "POST",
+                    body: formData,
+                    headers : { 
+                        'Accept': 'application/json'
+                   }                
+                });
+                const json = await resp.json();
+                if(resp.status != 200) {
+                    alert(json["error"]);
+                } else {
+                    alert(json["success"]);
+                }
+            }
+        </script>
+    </div>
+  </body>
+</html>
+
